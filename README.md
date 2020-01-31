@@ -13,10 +13,13 @@ What things you need to install the software and how to install them
         JAVA (Ubuntu instalation) - sudo apt-get install oracle-java11-installer-local
         JDK (Ubuntu instaltion) - sudo apt install openjdk-11-jdk 
 
-###How to install
+**How to install**
+
 * 1.Download ZIP repository
 * 2.Unzip the files to the directory where you want to store the program 
-#####Manual install
+
+**Manual install**
+
 * 3.Open terminal on your device
 * 4.Go to "src" folder it's in unzip files
 * 5.Run these commands(You must be in "src" folder!):
@@ -32,13 +35,13 @@ What things you need to install the software and how to install them
 
 * 6.Run command `java flightManagament.FlightManagement`
 
-#####Auto installation
+**Auto installation**
 
 * 3.Open project on you programming environment tool for JAVA(for instance IntelliJ IDEA)
 * 4.Run main method which is `FlightManagement.java` 
 
 
-##Built With
+**Built With**
 
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [IntelliJ IDEA](https://www.jetbrains.com/idea/) - Tool
