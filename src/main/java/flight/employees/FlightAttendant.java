@@ -3,10 +3,14 @@ package flight.employees;
 import exceptionsForFlight.FlightAttendantLanguageException;
 import exceptionsForFlight.FlightIsNotSetException;
 import flight.enums.Language;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
 
+@Setter
+@Getter
 public class FlightAttendant extends Employee {
     private List<Language> languages;
 
@@ -18,10 +22,6 @@ public class FlightAttendant extends Employee {
 
         super(name, phoneNumber, birthDate, salary);
         this.languages = languages;
-    }
-
-    public List<Language> getLanguages() {
-        return languages;
     }
 
     private boolean isFlightAttendantKnownFlightLanguage() throws FlightIsNotSetException, FlightAttendantLanguageException {

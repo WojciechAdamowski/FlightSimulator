@@ -1,10 +1,15 @@
 package flight.employees;
+
 import exceptionsForFlight.PilotAnalogCompassException;
 import flight.enums.PilotStatus;
 import flight.items.AnalogCompass;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
+@Setter
+@Getter
 public class Pilot extends Employee {
     private PilotStatus status;
     private AnalogCompass analogCompass;
@@ -18,18 +23,6 @@ public class Pilot extends Employee {
         super(name, phoneNumber, birthDate, salary);
         this.status = status;
         this.analogCompass = new AnalogCompass();
-    }
-
-    public void setHaveAnalogCompass(AnalogCompass haveAnalogCompass) {
-        this.analogCompass = haveAnalogCompass;
-    }
-
-    public PilotStatus getStatus() {
-        return status;
-    }
-
-    public AnalogCompass getAnalogCompass() {
-        return analogCompass;
     }
 
     @Override

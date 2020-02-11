@@ -2,9 +2,13 @@ package flight.employees;
 
 import flight.Verifiable;
 import flight.Flight;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
+@Setter
+@Getter
 public abstract class Employee implements Verifiable {
     protected Flight flight;
     private String name;
@@ -17,27 +21,5 @@ public abstract class Employee implements Verifiable {
         this.phoneNumber = phoneNumber;
         this.birthDate = birthDate;
         this.salary = salary;
-    }
-
-    public void setFlight(Flight flight){  this.flight = flight; }
-
-    public Flight getFlight() {
-        return flight;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public int getSalary() {
-        return salary;
     }
 }

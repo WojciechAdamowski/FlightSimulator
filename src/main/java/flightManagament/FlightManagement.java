@@ -42,8 +42,6 @@ public class FlightManagement {
         flight.addFlightAttendant(flightAttendantTwo);
         flight.addFlightAttendant(flightAttendantThree);
 
-//         ((Pilot)flight.getEmployees().get(0)).setHaveAnalogCompass(null);
-
         for (Employee employee : flight.getEmployees()){
             employee.setFlight(flight);
         }
