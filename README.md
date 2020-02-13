@@ -46,3 +46,4 @@ What things you need to install the software and how to install them
 
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [IntelliJ IDEA](https://www.jetbrains.com/idea/) - Tool
+* [Lombok](https://projectlombok.org/) - Java Library
