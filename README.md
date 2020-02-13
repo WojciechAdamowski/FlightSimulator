@@ -16,7 +16,8 @@ What things you need to install the software and how to install them
 **How to install**
 
 * 1.Download ZIP repository
-* 2.Unzip the files to the directory where you want to store the program 
+* 2.Unzip the files(by right-clicking on the file and select "Extract to" then select the destination folder)
+    to the directory where you want to store the program 
 
 **Manual install**
 
