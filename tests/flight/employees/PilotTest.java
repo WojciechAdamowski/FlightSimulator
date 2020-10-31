@@ -30,7 +30,7 @@ class PilotTest {
 
     @Test
     void checkReadyWhilePilotDoesNotHaveAnalogCompass() {
-        TEST_PILOT.setHaveAnalogCompass(null);
+        TEST_PILOT.setAnalogCompass(null);
         assertThrows(PilotAnalogCompassException.class, TEST_PILOT::checkReady, "Pilot should not have analog compass and not be ready to flight but he is!");
     }
 }

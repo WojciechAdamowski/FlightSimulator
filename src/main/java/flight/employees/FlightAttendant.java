@@ -14,6 +14,14 @@ import java.util.List;
 public class FlightAttendant extends Employee {
     private List<Language> languages;
 
+    /**
+     *
+     * @param languages List of languages which flight attendant know
+     * @param name Flight attendant`s name
+     * @param phoneNumber Flight attendant`s phone number
+     * @param birthDate Flight attendant`s birthdate
+     * @param salary Flight attendant`s salary
+     */
     public FlightAttendant(List<Language> languages,
                            String name,
                            int phoneNumber,
@@ -24,6 +32,13 @@ public class FlightAttendant extends Employee {
         this.languages = languages;
     }
 
+    /**
+     * This method check that is flight attendant know language use in flight
+     *
+     * @return It can throws two exceptions or True if flight attendant is ready to flight
+     * @throws FlightIsNotSetException This exception means that flight is not set to flight attendant
+     * @throws FlightAttendantLanguageException This exception means that flight attendant dont know flight language
+     */
     private boolean isFlightAttendantKnownFlightLanguage() throws FlightIsNotSetException, FlightAttendantLanguageException {
         if (flight != null) {
             Language flightLanguage = flight.getFlightLanguage();

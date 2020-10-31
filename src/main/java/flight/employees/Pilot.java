@@ -14,6 +14,14 @@ public class Pilot extends Employee {
     private PilotStatus status;
     private AnalogCompass analogCompass;
 
+    /**
+     *
+     * @param status Pilot status which kind of pilot is it(e.g. CAPTAIN or NAVIGATOR)
+     * @param name Pilot`s name
+     * @param phoneNumber Pilot`s phone number
+     * @param birthDate Pilot`s birthdate
+     * @param salary Pilot`s salary
+     */
     public Pilot(PilotStatus status,
                  String name,
                  int phoneNumber,

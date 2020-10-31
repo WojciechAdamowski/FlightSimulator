@@ -1,6 +1,7 @@
 package flightManagament;
 
 
+import employmentDepartment.EmploymentDepartment;
 import flight.Flight;
 import flight.employees.*;
 import flight.enums.Language;
@@ -9,20 +10,29 @@ import flight.passengers.Passenger;
 
 import java.util.*;
 
+/**
+ * This is application for create and management flight
+ *
+ * @version 1.0
+ * @author Wojciech Adamowski
+ * @since 2019-10-10
+ */
 public class FlightManagement {
     public static void main(String[] args) {
+        EmploymentDepartment employmentDepartment = EmploymentDepartment.getInstance();
 
-        Flight flight1 = new Flight(1, Language.ENGLISH);
-
-        creatAndAddToFlightDefaultCrew(flight1);
-        creatDefaultPassengers(flight1, new Passenger(), 230);
-
-        flight1.showEmployers();
-
-        flight1.isFlightReady();
+        employmentDepartment.hirePilot();
     }
 
-    private static void creatAndAddToFlightDefaultCrew(Flight flight){
+    /**
+     * This method create and set default crew to flight which it`s get.
+     * It`s create two languages, two pilots, three flight attendants and
+     * set them to given flight.
+     *
+     * @param flight In this parameter we must give our flight in
+     *               which this method create and set default crew.
+     */
+    private static void createAndAddToFlightDefaultCrew(Flight flight){
         Date birthDate = getDate(1980, 10,10);
 
         List<Language> languagesForFlightAttendant = new LinkedList<>();
@@ -47,12 +57,27 @@ public class FlightManagement {
         }
     }
 
-    private static void creatDefaultPassengers(Flight flight, Passenger passenger, int howManyPassenger){
+    /**
+     * This method create given number of passengers and set them to given flight
+     *
+     * @param flight This is a flight in which we set passengers
+     * @param passenger This is create earlier passenger
+     * @param howManyPassenger This is number passenger to create and set
+     */
+    private static void createDefaultPassengers(Flight flight, Passenger passenger, int howManyPassenger){
         for (int i = 0; i < howManyPassenger; i++){
             flight.addPassenger(passenger);
         }
     }
 
+    /**
+     * This function return date in format (year,month,day)
+     *
+     * @param year Year which we want set
+     * @param month Month which we want set
+     * @param day Day which we want set
+     * @return Formatted date
+     */
     private static Date getDate(int year,int month,int day){
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, year);

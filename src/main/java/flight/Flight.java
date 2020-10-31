@@ -22,35 +22,64 @@ public class Flight {
     private List<Passenger> passengers = new LinkedList<>();
     private Language flightLanguage;
 
+    /**
+     *
+     * @param id New id for flight (e.g. 328)
+     * @param flightLanguage The language for flight which must be
+     *                       taken from Enums (e.g. Language.ENGLISH)
+     */
     public Flight(int id, Language flightLanguage) {
         this.id = id;
         this.flightLanguage = flightLanguage;
     }
 
+    /**
+     * This method allows add new pilot to flight
+     *
+     * @param pilot This parameter must get
+     *              previously created pilot
+     */
     public void addPilot(Pilot pilot) {
         if (pilot != null) {
             employees.add(pilot);
         } else {
-            System.out.println("Given pilot doesn't exist, there is NULL !");
+            System.out.print("Given pilot doesn't exist, there is NULL !\n");
         }
     }
 
+    /**
+     * This method allows add new flight attendant to flight
+     *
+     * @param attendant This parameter must get previously
+     *                  created flight attendant
+     */
     public void addFlightAttendant(FlightAttendant attendant) {
         if (attendant != null) {
             employees.add(attendant);
         } else {
-            System.out.println("Given Flight attendant doesn't exist, there is NULL !");
+            System.out.print("Given Flight attendant doesn't exist, there is NULL !\n");
         }
     }
 
+    /**
+     * This method allows add new passenger to flight
+     * @param passenger This parameter must get previously
+     *                  created passenger
+     */
     public void addPassenger(Passenger passenger) {
         if (passenger != null) {
             passengers.add(passenger);
         } else {
-            System.out.println("Given Passenger doesn't exist, there is NULL !");
+            System.out.print("Given Passenger doesn't exist, there is NULL !\n");
         }
     }
 
+    /**
+     * This method display all employers and them details:          <br>
+     *  - All (Flight ID, Name, Phone Number, Birth Date, Salary)    <br>
+     *  - For Pilots (Pilot status, Have analog compass)             <br>
+     *  - For Flight Attendants (Languages)
+     */
     public void showEmployers() {
         System.out.println("##################################################");
         for (Employee employee : employees) {
@@ -72,13 +101,25 @@ public class Flight {
         }
     }
 
-
+    /**
+     * This method check current flight is ready to start:      <br>
+     *     1. Checks minimum number of pilots (2)               <br>
+     *     2. Checks minimum number of Flight attendants (3)    <br>
+     *     3. Checks is every employer is ready                 <br>
+     *     4. Checks minimum number of passengers (240)         <br>
+     *
+     * After check display that flight is ready or not
+     *
+     * @return Return:                          <br>
+     * - True if the flight is ready or         <br>
+     * - False if flight is not ready
+     */
     public boolean isFlightReady() {
         //check number of pilots
         int minimumNumberOfPilots = 2;
         boolean correctNumberOfPilots = true;
         if (countNumberOfPilotsInFlight() < minimumNumberOfPilots) {
-            System.out.println("Not enough pilots in flight");
+            System.out.print("Not enough pilots in flight\n");
             correctNumberOfPilots = false;
         }
 
@@ -86,7 +127,7 @@ public class Flight {
         int minimumNumberOfFlightAttendant = 3;
         boolean correctNumberOfFlightAttendant = true;
         if (countNumberOfFlightAttendantInFlightStaff() < minimumNumberOfFlightAttendant) {
-            System.out.println("Not enough flight attendant in flight");
+            System.out.print("Not enough flight attendant in flight\n");
             correctNumberOfFlightAttendant = false;
         }
 
@@ -96,7 +137,7 @@ public class Flight {
             try {
                 employeeReadyStatus = employee.checkReady();
             } catch (FlightIsNotSetException | FlightAttendantLanguageException | PilotAnalogCompassException error) {
-                System.out.println(error.toString());
+                System.out.print(error.toString() + "\n");
                 employeeReadyStatus = false;
                 break;
             }
@@ -107,7 +148,7 @@ public class Flight {
         int maximNumberOfPassengers = 200;
         boolean correctNumberOfPassengers = true;
         if (passengers.size() > minimumNumberOfPassengers || maximNumberOfPassengers > passengers.size()) {
-            System.out.println("Flight is NOT ready because of passengers");
+            System.out.print("Flight is NOT ready because of passengers\n");
             correctNumberOfPassengers = false;
         }
 
@@ -120,6 +161,11 @@ public class Flight {
         return isFlightReady;
     }
 
+    /**
+     * This method counts number of pilots in flight
+     *
+     * @return Number of pilots in flight
+     */
     private int countNumberOfPilotsInFlight() {
         int numberOfPilotsInFlightStaff = 0;
         for (Employee employee : employees) {
@@ -130,6 +176,11 @@ public class Flight {
         return numberOfPilotsInFlightStaff;
     }
 
+    /**
+     * This method count number of flight attendants in flight
+     *
+     * @return Number of flight attendants
+     */
     private int countNumberOfFlightAttendantInFlightStaff() {
         int numberOfFlightAttendantsInFlightStaff = 0;
         for (Employee employee : employees) {

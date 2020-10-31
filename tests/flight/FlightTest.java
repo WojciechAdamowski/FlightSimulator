@@ -28,7 +28,9 @@ class FlightTest {
     private static List<Language> languagesForFlightAttendant = new LinkedList<>();
     private static ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
-
+    /**
+     * This method create languages for flight and birthdate for employers
+     */
     @BeforeAll
     static void createLanguagesForFlightAttendantAndBirthDate(){
         languagesForFlightAttendant.add(Language.POLISH);
@@ -38,6 +40,10 @@ class FlightTest {
         birthDate =  calendar.getTime();
     }
 
+    /**
+     * This method create new Flight with english
+     * language, pilot, flight attendant in it
+     */
     @BeforeEach
     void createDefaultFlight(){
         TEST_FLIGHT = new Flight(1, Language.ENGLISH);
@@ -49,6 +55,10 @@ class FlightTest {
         System.setOut(new PrintStream(outContent));
     }
 
+    /**
+     * This method checks that the flight is ready
+     * for take-off if it has all the necessary resources
+     */
     @Test
     void testIsFlightReadyMethodWithCorrectVariables(){
         TEST_FLIGHT = new Flight(1, Language.ENGLISH);
@@ -67,24 +77,40 @@ class FlightTest {
         assertTrue(TEST_FLIGHT.isFlightReady(), "Flight should be ready, but is not");
     }
 
+    /**
+     * This method checks output of addPilot when we give in it null
+     * pilot, this method must show up us message about pilot doesn't exist
+     */
     @Test
     void addPilotCheckOfNullPilot(){
         TEST_FLIGHT.addPilot(null);
         assertEquals("Given pilot doesn't exist, there is NULL !\n" , outContent.toString());
     }
 
+    /**
+     * This method checks addFlightAttendant method in this situation
+     * if we put in it null flight attendant it should show up error message
+     */
     @Test
     void addFlightAttendantCheckOfNullFlightAttendant(){
         TEST_FLIGHT.addFlightAttendant(null);
         assertEquals("Given Flight attendant doesn't exist, there is NULL !\n", outContent.toString());
     }
 
+    /**
+     * This method checks addFlightAttendant method in this situation
+     *  if we put in it null flight attendant it should show up error message
+     */
     @Test
     void addPassengerCheckOfNullPassenger(){
         TEST_FLIGHT.addPassenger(null);
         assertEquals("Given Passenger doesn't exist, there is NULL !\n", outContent.toString());
     }
 
+    /**
+     * This method checks that is flight not ready for fly if we don't have
+     * ready pilot
+     */
     @Test
     void isFlightReadyWhenWeHaveNotReadyPilot() {
         TEST_FLIGHT = new Flight(1, Language.ENGLISH);
@@ -101,11 +127,15 @@ class FlightTest {
         }
 
         Employee firstPilot = TEST_FLIGHT.getEmployees().get(0);
-        ((Pilot) firstPilot).setHaveAnalogCompass(null);
+        ((Pilot) firstPilot).setAnalogCompass(null);
         TEST_FLIGHT.isFlightReady();
         assertEquals("exceptionsForFlight.PilotAnalogCompassException: Pilot is not ready because there is no compass\n", outContent.toString());
     }
 
+    /**
+     * This method checks that is flight not ready for fly if we don't have
+     * ready flight attendant
+     */
     @Test
     void isFlightReadyWhenWeHaveNotReadyFlightAttendant() {
         TEST_FLIGHT = new Flight(1, Language.FRENCH);
@@ -125,6 +155,10 @@ class FlightTest {
         assertEquals("exceptionsForFlight.FlightAttendantLanguageException: Flight attendant don't know the right language!\n", outContent.toString());
     }
 
+    /**
+     * This method checks that is flight not ready for fly if we don't have
+     * enough flight attendants
+     */
     @Test
     void isFlightReadyWhenWeDontHaveEnoughFlightAttendants(){
         TEST_FLIGHT = new Flight(1, Language.ENGLISH);
@@ -142,6 +176,10 @@ class FlightTest {
         assertEquals("Not enough flight attendant in flight\n", outContent.toString());
     }
 
+    /**
+     * This method checks that is flight not ready for fly if we don't have
+     * enough pilots
+     */
     @Test
     void isFlightReadyWhenWeDontHaveEnoughPilots(){
         TEST_FLIGHT = new Flight(1, Language.ENGLISH);
