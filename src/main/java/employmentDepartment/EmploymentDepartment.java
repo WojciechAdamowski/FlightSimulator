@@ -20,10 +20,18 @@ public class EmploymentDepartment {
      * This methods allows us to hire new pilot with
      * given attributes
      */
-    public void hirePilot(){
+    public void hirePilotNewPilot(){
         Scanner input = new Scanner(System.in);
-        System.out.println("Enter some info: ");
-        String someInfo = input.nextLine();
-        System.out.println(someInfo);
+        System.out.print("Choose one of two pilot status " +
+                "\n 1. Captain " +
+                "\n 2. Navigator " +
+                "\nYou chose: \n");
+
+        String pilotStatus = input.nextLine();
+        System.out.println(pilotStatus);
+    }
+
+    public void showAllPilots(){
+        System.out.print("");
     }
 }
