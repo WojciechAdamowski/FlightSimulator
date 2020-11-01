@@ -21,7 +21,7 @@ public class FlightManagement {
     public static void main(String[] args) {
         EmploymentDepartment employmentDepartment = EmploymentDepartment.getInstance();
 
-        employmentDepartment.hirePilotNewPilot();
+        employmentDepartment.hireNewPilot();
     }
 
     /**

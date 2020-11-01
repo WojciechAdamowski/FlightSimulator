@@ -28,6 +28,16 @@ public class EmploymentDepartment {
         System.out.println(pilotStatus);
     }
 
+    /**
+     * This method ask about which status of pilot we choose
+     * <br>
+     * We can choose from two statuses: CAPTAIN or NAVIGATOR
+     * <br>
+     * If we dont choose one of this two method will run and
+     * ask about it again
+     * <br>
+     * @return This return is asked pilot status
+     */
     private PilotStatus askAboutPilotStatus(){
         Scanner input = new Scanner(System.in);
         System.out.print("Choose one of two pilot status " +
@@ -42,7 +52,8 @@ public class EmploymentDepartment {
         } else if (pilotStatus.equals("2")){
             return PilotStatus.PILOT_NAVIGATOR;
         } else {
-            return null;
+            System.out.print("There is no such status, please select the correct one! \n");
+            return askAboutPilotStatus();
         }
     }
 }
