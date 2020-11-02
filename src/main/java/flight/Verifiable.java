@@ -13,7 +13,7 @@ public interface Verifiable {
      *     - All - have set flight
      *
      * @return Some kind of exceptions
-     * @throws FlightIsNotSetException Flight is not set to employer exception
+     * @throws FlightIsNotSetException Flight is not set to employer
      * @throws FlightAttendantLanguageException Flight attendants dont know specific language
      * @throws PilotAnalogCompassException Pilots dont have analog compasses
      */
