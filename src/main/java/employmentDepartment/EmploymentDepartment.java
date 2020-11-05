@@ -1,5 +1,7 @@
 package employmentDepartment;
 
+import employmentDepartment.exceptions.pilotBirthdate.PilotBirthdateDoesNotHaveThreePeacesException;
+import employmentDepartment.exceptions.pilotBirthdate.PilotBirthdateIsNotRealException;
 import employmentDepartment.exceptions.pilotName.PilotNameDoesNotHaveTwoPartsException;
 import employmentDepartment.exceptions.pilotName.PilotNameDoesNotHaveUpperCaseCharactersException;
 import employmentDepartment.exceptions.pilotName.PilotNameIsEmptyException;
@@ -9,6 +11,12 @@ import employmentDepartment.exceptions.pilotPhoneNumber.PilotPhoneIsNotANumberEx
 import employmentDepartment.exceptions.pilotStatus.PilotStatusDoesNotExistException;
 import flight.enums.PilotStatus;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 /**
@@ -35,8 +43,9 @@ public class EmploymentDepartment {
         String pilotStatusNumber = printChooseMenuAndInputPilotStatus(input);
         String pilotName = printInputForPilotName(input);
         String pilotPhoneNumber = printInputForPilotPhoneNumber(input);
+        String pilotBirthdate = printInputForPilotBirthdate(input);
 
-        registerNewPilot(pilotStatusNumber, pilotName, pilotPhoneNumber);
+        registerNewPilot(pilotStatusNumber, pilotName, pilotPhoneNumber, pilotBirthdate);
     }
 
     private String printChooseMenuAndInputPilotStatus(Scanner input){
@@ -59,19 +68,28 @@ public class EmploymentDepartment {
         return input.nextLine();
     }
 
+    private String printInputForPilotBirthdate(Scanner input){
+        System.out.print("Please write pilot's birthdate(e.g. 2000-10-28): ");
+        return input.nextLine();
+    }
+
     public void registerNewPilot(
             String pilotStatusToCheck,
             String pilotNameToCheck,
-            String pilotPhoneNumberToCheck
+            String pilotPhoneNumberToCheck,
+            String pilotBirthdateToCheck
     ){
         try {
             PilotStatus pilotStatus = checkCorrectnessAndGetPilotStatus(pilotStatusToCheck);
             String pilotName = checkCorrectnessAndGetPilotName(pilotNameToCheck);
             String pilotPhoneNumber = checkCorrectnessAndGetPilotPhoneNumber(pilotPhoneNumberToCheck);
+            Date pilotBirthdate = checkCorrectnessAndGetPilotBirthdate(pilotBirthdateToCheck);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             System.out.println(
                     "Status: " + pilotStatus + "\n" +
                     "Name: " + pilotName + "\n" +
-                    "Phone Number: " + pilotPhoneNumber
+                    "Phone Number: " + pilotPhoneNumber + "\n" +
+                    "Birthdate: " + format.format(pilotBirthdate)
             );
         }catch (PilotStatusDoesNotExistException |
                 PilotNameIsEmptyException |
@@ -79,7 +97,10 @@ public class EmploymentDepartment {
                 PilotNameIsNotStringException |
                 PilotNameDoesNotHaveUpperCaseCharactersException |
                 PilotPhoneIsNotANumberException |
-                PilotPhoneDoesNotHaveNineNumbersException error){
+                PilotPhoneDoesNotHaveNineNumbersException |
+                PilotBirthdateDoesNotHaveThreePeacesException |
+                PilotBirthdateIsNotRealException |
+                ParseException error){
             System.out.println(error.getMessage());
         }
     }
@@ -109,10 +130,10 @@ public class EmploymentDepartment {
 
     /**
      * This method checks: <br>
-     *     1. If given name is empty
-     *     2. If given name have two parts
-     *     3. If given name is only letters
-     *     4. If given name have upper characters in first letter in each pieces
+     *     1. If given name is empty                                                <br>
+     *     2. If given name have two parts                                          <br>
+     *     3. If given name is only letters                                         <br>
+     *     4. If given name have upper characters in first letter in each pieces    <br>
      *
      * @param nameToCheck Given name which we want to check
      * @return Name if everything is correct
@@ -168,21 +189,23 @@ public class EmploymentDepartment {
     }
 
     /**
-     * This method check: <br>
-     *     1. If given phone is number
-     *     2. If given phone has more or less than 9 numbers
+     * This method checks:                                      <br>
+     *     1. If given phone is number                          <br>
+     *     2. If given phone has more or less than 9 numbers    <br>
      *
      * @param phoneToCheck phone number to check
      * @return checked phone number
+     * @throws PilotPhoneIsNotANumberException throw this exception if phone is not a number
+     * @throws PilotPhoneDoesNotHaveNineNumbersException throw this exception if phone does not have nine numbers
      */
     private String checkCorrectnessAndGetPilotPhoneNumber(String phoneToCheck) throws
             PilotPhoneIsNotANumberException,
             PilotPhoneDoesNotHaveNineNumbersException
     {
         if (checkIfPhoneIsNotANumber(phoneToCheck)){
-            throw new PilotPhoneIsNotANumberException("Given phone is not a number");
+            throw new PilotPhoneIsNotANumberException("Given phone is not a number!");
         } else if (checkIfPhoneDoesNotHaveNineNumbers(phoneToCheck)){
-            throw new PilotPhoneDoesNotHaveNineNumbersException("Given phone does not have nine numbers");
+            throw new PilotPhoneDoesNotHaveNineNumbersException("Given phone does not have nine numbers!");
         } else {
             return phoneToCheck;
         }
@@ -201,5 +224,39 @@ public class EmploymentDepartment {
         return !(phone.length() == 9);
     }
 
+    /**
+     * This method checks: <br>
+     *     1. If given birthdate have three peaces separated by "-" <br>
+     *     2. If given birthdate is probably real date
+     *
+     * @param birthdateToCheck given by user birthdate
+     * @return checked birthdate
+     */
+    private Date checkCorrectnessAndGetPilotBirthdate(String birthdateToCheck) throws
+            PilotBirthdateDoesNotHaveThreePeacesException,
+            PilotBirthdateIsNotRealException,
+            ParseException
+    {
+        if (checkIfDateDoesNotHaveThreePeaces(birthdateToCheck)){
+            throw new PilotBirthdateDoesNotHaveThreePeacesException(
+                    "Pilot birthday must be separated by \"-\" and must have three peaces! ");
+        } else if (checkIfDateIsNotProbablyReal(birthdateToCheck)){
+            throw new PilotBirthdateIsNotRealException("Pilot birthdate must be real!");
+        } else {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            return formatter.parse(birthdateToCheck);
+        }
+
+    }
+
+    private boolean checkIfDateDoesNotHaveThreePeaces(String date){
+        return !(date.split("-").length == 3);
+    }
+
+    private boolean checkIfDateIsNotProbablyReal(String date){
+        int years = Integer.parseInt(date.split("-")[0]);
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        return currentYear - years > 80;
+    }
 
 }
