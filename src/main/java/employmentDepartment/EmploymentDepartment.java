@@ -1,6 +1,12 @@
 package employmentDepartment;
 
-import employmentDepartment.exceptions.*;
+import employmentDepartment.exceptions.pilotName.PilotNameDoesNotHaveTwoPartsException;
+import employmentDepartment.exceptions.pilotName.PilotNameDoesNotHaveUpperCaseCharactersException;
+import employmentDepartment.exceptions.pilotName.PilotNameIsEmptyException;
+import employmentDepartment.exceptions.pilotName.PilotNameIsNotStringException;
+import employmentDepartment.exceptions.pilotPhoneNumber.PilotPhoneDoesNotHaveNineNumbersException;
+import employmentDepartment.exceptions.pilotPhoneNumber.PilotPhoneIsNotANumberException;
+import employmentDepartment.exceptions.pilotStatus.PilotStatusDoesNotExistException;
 import flight.enums.PilotStatus;
 
 import java.util.Scanner;
@@ -25,22 +31,55 @@ public class EmploymentDepartment {
      */
     public void hireNewPilot(){
         Scanner input = new Scanner(System.in);
+
         String pilotStatusNumber = printChooseMenuAndInputPilotStatus(input);
         String pilotName = printInputForPilotName(input);
-        registerNewPilot(pilotStatusNumber, pilotName);
+        String pilotPhoneNumber = printInputForPilotPhoneNumber(input);
+
+        registerNewPilot(pilotStatusNumber, pilotName, pilotPhoneNumber);
     }
 
+    private String printChooseMenuAndInputPilotStatus(Scanner input){
+        System.out.print(
+                "Choose one of two pilot status \n" +
+                        " 1. Captain \n" +
+                        " 2. Navigator \n" +
+                        "You chose: "
+        );
+        return input.nextLine();
+    }
 
-    public void registerNewPilot(String pilotStatusToCheck, String pilotNameToCheck){
+    private String printInputForPilotName(Scanner input){
+        System.out.print("Please write pilot name(e.g. Janusz Kowalski): ");
+        return input.nextLine();
+    }
+
+    private String printInputForPilotPhoneNumber(Scanner input){
+        System.out.print("Please write pilot phone number(e.g. 526876542): ");
+        return input.nextLine();
+    }
+
+    public void registerNewPilot(
+            String pilotStatusToCheck,
+            String pilotNameToCheck,
+            String pilotPhoneNumberToCheck
+    ){
         try {
             PilotStatus pilotStatus = checkCorrectnessAndGetPilotStatus(pilotStatusToCheck);
             String pilotName = checkCorrectnessAndGetPilotName(pilotNameToCheck);
-            System.out.println("Status: " + pilotStatus + "\nName: " + pilotName);
+            String pilotPhoneNumber = checkCorrectnessAndGetPilotPhoneNumber(pilotPhoneNumberToCheck);
+            System.out.println(
+                    "Status: " + pilotStatus + "\n" +
+                    "Name: " + pilotName + "\n" +
+                    "Phone Number: " + pilotPhoneNumber
+            );
         }catch (PilotStatusDoesNotExistException |
                 PilotNameIsEmptyException |
                 PilotNameDoesNotHaveTwoPartsException |
                 PilotNameIsNotStringException |
-                PilotNameDoesNotHaveUpperCaseCharactersException error){
+                PilotNameDoesNotHaveUpperCaseCharactersException |
+                PilotPhoneIsNotANumberException |
+                PilotPhoneDoesNotHaveNineNumbersException error){
             System.out.println(error.getMessage());
         }
     }
@@ -129,28 +168,38 @@ public class EmploymentDepartment {
     }
 
     /**
-     * This method print menu and get from user pilot status
+     * This method check: <br>
+     *     1. If given phone is number
+     *     2. If given phone has more or less than 9 numbers
      *
-     * @return This is input from our user
+     * @param phoneToCheck phone number to check
+     * @return checked phone number
      */
-    private String printChooseMenuAndInputPilotStatus(Scanner input){
-        System.out.print(
-                "Choose one of two pilot status \n" +
-                " 1. Captain \n" +
-                " 2. Navigator \n" +
-                "You chose: "
-        );
-        return input.nextLine();
+    private String checkCorrectnessAndGetPilotPhoneNumber(String phoneToCheck) throws
+            PilotPhoneIsNotANumberException,
+            PilotPhoneDoesNotHaveNineNumbersException
+    {
+        if (checkIfPhoneIsNotANumber(phoneToCheck)){
+            throw new PilotPhoneIsNotANumberException("Given phone is not a number");
+        } else if (checkIfPhoneDoesNotHaveNineNumbers(phoneToCheck)){
+            throw new PilotPhoneDoesNotHaveNineNumbersException("Given phone does not have nine numbers");
+        } else {
+            return phoneToCheck;
+        }
     }
 
-    /**
-     * This method print text and input for user
-     *
-     * @param input This is scanner
-     * @return This is input from our user
-     */
-    private String printInputForPilotName(Scanner input){
-        System.out.print("Please write pilot name(e.g. Janusz Kowalski): ");
-        return input.nextLine();
+    private boolean checkIfPhoneIsNotANumber(String phone){
+        for (Character character : phone.toCharArray()){
+            if (!Character.isDigit(character)){
+                return true;
+            }
+        }
+        return false;
     }
+
+    private boolean checkIfPhoneDoesNotHaveNineNumbers(String phone){
+        return !(phone.length() == 9);
+    }
+
+
 }
