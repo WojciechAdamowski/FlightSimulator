@@ -3,12 +3,17 @@ package flightManagament;
 
 import employmentDepartment.EmploymentDepartment;
 import flight.Flight;
-import flight.employees.*;
+import flight.employees.Employee;
+import flight.employees.FlightAttendant;
+import flight.employees.Pilot;
 import flight.enums.Language;
 import flight.enums.PilotStatus;
 import flight.passengers.Passenger;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This is application for create and management flight
