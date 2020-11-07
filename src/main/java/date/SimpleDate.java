@@ -1,5 +1,7 @@
 package date;
 
+import date.exceptions.IncorrectDayException;
+import date.exceptions.IncorrectMonthException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,9 +42,7 @@ public class SimpleDate {
         if (month >= 1 && month <= 12){
             return month;
         } else {
-            System.out.print("This month doesn't exist please choose another one: ");
-            Scanner scanner = new Scanner(System.in);
-            return checkAndGetMonth(scanner.nextInt());
+            return printErrorMessageAndGetNewMonth("This month doesn't exist please choose another one: ");
         }
     }
 
@@ -50,10 +50,22 @@ public class SimpleDate {
         if (day >= 1 && day <= 31){
             return day;
         } else {
-            System.out.print("This day doesn't exist please choose another one: ");
-            Scanner scanner = new Scanner(System.in);
-            return checkAndGetDay(scanner.nextInt());
+            return checkAndGetDay(
+                    printErrorMessageAndGetNewDay("This day doesn't exist please choose another one: ")
+            );
         }
+    }
+
+    private int printErrorMessageAndGetNewMonth(String errorMessage){
+        System.out.print(errorMessage);
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextInt();
+    }
+
+    private int printErrorMessageAndGetNewDay(String errorMessage){
+        System.out.print(errorMessage);
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextInt();
     }
 
     public Date getSimpleDateInDate(){
