@@ -19,7 +19,7 @@ public class Pilot extends Employee {
      * @param status Pilot status which kind of pilot is it(e.g. CAPTAIN or NAVIGATOR)
      * @param name Pilot`s name
      * @param phoneNumber Pilot`s phone number
-     * @param birthDate Pilot`s birthdate
+     * @param birthDate Pilot`s birth date
      * @param salary Pilot`s salary
      */
     public Pilot(PilotStatus status,
