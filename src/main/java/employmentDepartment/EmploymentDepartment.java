@@ -1,5 +1,6 @@
 package employmentDepartment;
 
+import date.SimpleDate;
 import employmentDepartment.exceptions.pilotBirthdate.PilotBirthdateDoesNotHaveThreePeacesException;
 import employmentDepartment.exceptions.pilotBirthdate.PilotBirthdateIsNotRealException;
 import employmentDepartment.exceptions.pilotName.PilotNameDoesNotHaveTwoPartsException;
@@ -11,12 +12,9 @@ import employmentDepartment.exceptions.pilotPhoneNumber.PilotPhoneIsNotANumberEx
 import employmentDepartment.exceptions.pilotStatus.PilotStatusDoesNotExistException;
 import flight.enums.PilotStatus;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 /**
@@ -43,9 +41,9 @@ public class EmploymentDepartment {
         String pilotStatusNumber = printChooseMenuAndInputPilotStatus(input);
         String pilotName = printInputForPilotName(input);
         String pilotPhoneNumber = printInputForPilotPhoneNumber(input);
-        String pilotBirthdate = printInputForPilotBirthdate(input);
+        String pilotBirthDate = printInputForPilotBirthDate(input);
 
-        registerNewPilot(pilotStatusNumber, pilotName, pilotPhoneNumber, pilotBirthdate);
+        registerNewPilot(pilotStatusNumber, pilotName, pilotPhoneNumber, pilotBirthDate);
     }
 
     private String printChooseMenuAndInputPilotStatus(Scanner input){
@@ -68,8 +66,8 @@ public class EmploymentDepartment {
         return input.nextLine();
     }
 
-    private String printInputForPilotBirthdate(Scanner input){
-        System.out.print("Please write pilot's birthdate(e.g. 2000-10-28): ");
+    private String printInputForPilotBirthDate(Scanner input){
+        System.out.print("Please write pilot's birthDate(e.g. 2000-10-28): ");
         return input.nextLine();
     }
 
@@ -77,19 +75,19 @@ public class EmploymentDepartment {
             String pilotStatusToCheck,
             String pilotNameToCheck,
             String pilotPhoneNumberToCheck,
-            String pilotBirthdateToCheck
+            String pilotBirthDateToCheck
     ){
         try {
             PilotStatus pilotStatus = checkCorrectnessAndGetPilotStatus(pilotStatusToCheck);
             String pilotName = checkCorrectnessAndGetPilotName(pilotNameToCheck);
             String pilotPhoneNumber = checkCorrectnessAndGetPilotPhoneNumber(pilotPhoneNumberToCheck);
-            Date pilotBirthdate = checkCorrectnessAndGetPilotBirthdate(pilotBirthdateToCheck);
+            Date pilotBirthDate = checkCorrectnessAndGetPilotBirthDate(pilotBirthDateToCheck);
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             System.out.println(
                     "Status: " + pilotStatus + "\n" +
                     "Name: " + pilotName + "\n" +
                     "Phone Number: " + pilotPhoneNumber + "\n" +
-                    "Birthdate: " + format.format(pilotBirthdate)
+                    "Birth date: " + format.format(pilotBirthDate)
             );
         }catch (PilotStatusDoesNotExistException |
                 PilotNameIsEmptyException |
@@ -99,8 +97,7 @@ public class EmploymentDepartment {
                 PilotPhoneIsNotANumberException |
                 PilotPhoneDoesNotHaveNineNumbersException |
                 PilotBirthdateDoesNotHaveThreePeacesException |
-                PilotBirthdateIsNotRealException |
-                ParseException error){
+                PilotBirthdateIsNotRealException error){
             System.out.println(error.getMessage());
         }
     }
@@ -226,25 +223,24 @@ public class EmploymentDepartment {
 
     /**
      * This method checks: <br>
-     *     1. If given birthdate have three peaces separated by "-" <br>
-     *     2. If given birthdate is probably real date
+     *     1. If given birthDate have three peaces separated by "-" <br>
+     *     2. If given birthDate is probably real date
      *
-     * @param birthdateToCheck given by user birthdate
-     * @return checked birthdate
+     * @param birthDateToCheck given by user birthDate
+     * @return checked birthDate
      */
-    private Date checkCorrectnessAndGetPilotBirthdate(String birthdateToCheck) throws
+    private Date checkCorrectnessAndGetPilotBirthDate(String birthDateToCheck) throws
             PilotBirthdateDoesNotHaveThreePeacesException,
-            PilotBirthdateIsNotRealException,
-            ParseException
+            PilotBirthdateIsNotRealException
     {
-        if (checkIfDateDoesNotHaveThreePeaces(birthdateToCheck)){
+        if (checkIfDateDoesNotHaveThreePeaces(birthDateToCheck)){
             throw new PilotBirthdateDoesNotHaveThreePeacesException(
                     "Pilot birthday must be separated by \"-\" and must have three peaces! ");
-        } else if (checkIfDateIsNotProbablyReal(birthdateToCheck)){
-            throw new PilotBirthdateIsNotRealException("Pilot birthdate must be real!");
+        } else if (checkIfDateIsNotProbablyReal(birthDateToCheck)){
+            throw new PilotBirthdateIsNotRealException("Pilot birth date must be real!");
         } else {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            return formatter.parse(birthdateToCheck);
+            SimpleDate simpleDate = new SimpleDate(birthDateToCheck);
+            return simpleDate.getSimpleDateInDate();
         }
 
     }
@@ -256,7 +252,7 @@ public class EmploymentDepartment {
     private boolean checkIfDateIsNotProbablyReal(String date){
         int years = Integer.parseInt(date.split("-")[0]);
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        return currentYear - years > 80;
+        return currentYear - years > 80 || currentYear - years < -80;
     }
 
 }
