@@ -36,6 +36,15 @@ public class SimpleDate {
         return this.year + "-" + this.month + "-" + this.day;
     }
 
+    /**
+     * This method checks if the year: <br>
+     *     1. Is empty <br>
+     *     2. Is NOT number <br>
+     * And return year in Int
+     *
+     * @param year This is year for check
+     * @return Checked year in int
+     */
     private int checkAndGetYear(String year){
         if (year.isEmpty()){
             return checkAndGetMonth(
@@ -50,6 +59,16 @@ public class SimpleDate {
         }
     }
 
+    /**
+     * This method checks if the month: <br>
+     *     1. Is empty <br>
+     *     2. Is NOT number <br>
+     *     3. Is NOT real <br>
+     * And return month in Int
+     *
+     * @param month This is month for check
+     * @return Return checked month in Int
+     */
     private int checkAndGetMonth(String month){
         if (month.isEmpty()){
             return checkAndGetMonth(
@@ -69,6 +88,16 @@ public class SimpleDate {
         }
     }
 
+    /**
+     * This method checks if the day: <br>
+     *     1. Is empty <br>
+     *     2. Is NOT number <br>
+     *     3. Is NOT real <br>
+     * And return day in Int
+     *
+     * @param day This is day for check
+     * @return Return checked day in Int
+     */
     private int checkAndGetDay(String day){
         if (day.isEmpty()){
             return checkAndGetMonth(
