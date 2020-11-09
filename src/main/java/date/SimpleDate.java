@@ -1,7 +1,5 @@
 package date;
 
-import date.exceptions.IncorrectDayException;
-import date.exceptions.IncorrectMonthException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,11 +20,11 @@ public class SimpleDate {
      *
      * @param date This parameter is date to convert and must be given in this format(yyyy-MM-dd)
      */
-    public SimpleDate(String date ){
+    public SimpleDate(String date){
         String[] splitDate = date.split("-");
-        this.year = Integer.parseInt(splitDate[0]);
-        this.month = checkAndGetMonth(Integer.parseInt(splitDate[1]));
-        this.day = checkAndGetDay(Integer.parseInt(splitDate[2]));
+        this.year = checkAndGetYear(splitDate[0]);
+        this.month = checkAndGetMonth(splitDate[1]);
+        this.day = checkAndGetDay(splitDate[2]);
     }
 
     /**
@@ -34,44 +32,80 @@ public class SimpleDate {
      *
      * @return Date in format "yyyy-MM-dd"
      */
-    public String getFormatDate(){
+    public String getFormatDateInString(){
         return this.year + "-" + this.month + "-" + this.day;
     }
 
-    private int checkAndGetMonth(int month){
-        if (month >= 1 && month <= 12){
-            return month;
+    private int checkAndGetYear(String year){
+        if (year.isEmpty()){
+            return checkAndGetMonth(
+                    printErrorMessageAndGetNewInput("Given year is empty!")
+            );
+        } else if (checkIfStringIsNotANumber(year)){
+            return checkAndGetMonth(
+                    printErrorMessageAndGetNewInput("Given year isn't a number!")
+            );
         } else {
-            return printErrorMessageAndGetNewMonth("This month doesn't exist please choose another one: ");
+            return Integer.parseInt(year);
         }
     }
 
-    private int checkAndGetDay(int day){
-        if (day >= 1 && day <= 31){
-            return day;
-        } else {
-            return checkAndGetDay(
-                    printErrorMessageAndGetNewDay("This day doesn't exist please choose another one: ")
+    private int checkAndGetMonth(String month){
+        if (month.isEmpty()){
+            return checkAndGetMonth(
+                    printErrorMessageAndGetNewInput("Given month is empty!")
+            );
+        } else if (checkIfStringIsNotANumber(month)){
+            return checkAndGetMonth(
+                    printErrorMessageAndGetNewInput("Given month isn't a number!")
+            );
+        } else if (Integer.parseInt(month) <= 1 || Integer.parseInt(month) >= 12){
+            return checkAndGetMonth(
+                    printErrorMessageAndGetNewInput("This month doesn't exist!")
             );
         }
+        else {
+            return Integer.parseInt(month);
+        }
     }
 
-    private int printErrorMessageAndGetNewMonth(String errorMessage){
-        System.out.print(errorMessage);
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextInt();
+    private int checkAndGetDay(String day){
+        if (day.isEmpty()){
+            return checkAndGetMonth(
+                    printErrorMessageAndGetNewInput("Given day is empty!")
+            );
+        } else if (checkIfStringIsNotANumber(day)) {
+            return checkAndGetMonth(
+                    printErrorMessageAndGetNewInput("Given day isn't a number!")
+            );
+        } else if (Integer.parseInt(day) <= 1 || Integer.parseInt(day) >= 31){
+            return checkAndGetDay(
+                    printErrorMessageAndGetNewInput("This day doesn't exist!")
+            );
+        } else {
+            return Integer.parseInt(day);
+        }
     }
 
-    private int printErrorMessageAndGetNewDay(String errorMessage){
-        System.out.print(errorMessage);
+    private boolean checkIfStringIsNotANumber(String month){
+        for (Character character : month.toCharArray()){
+            if (!Character.isDigit(character)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String printErrorMessageAndGetNewInput(String errorMessage){
+        System.out.print(errorMessage + " Please write a correct one:");
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextInt();
+        return scanner.nextLine();
     }
 
     public Date getSimpleDateInDate(){
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            return sdf.parse(this.getFormatDate());
+            return sdf.parse(this.getFormatDateInString());
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
