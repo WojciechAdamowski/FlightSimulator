@@ -1,6 +1,7 @@
 package flightManagament;
 
 
+import date.SimpleDate;
 import employmentDepartment.EmploymentDepartment;
 import flight.Flight;
 import flight.employees.Employee;
@@ -24,9 +25,11 @@ import java.util.List;
  */
 public class FlightManagement {
     public static void main(String[] args) {
-        EmploymentDepartment employmentDepartment = EmploymentDepartment.getInstance();
+//        EmploymentDepartment employmentDepartment = EmploymentDepartment.getInstance();
+//
+//        employmentDepartment.hireNewPilot();
 
-        employmentDepartment.hireNewPilot();
+        SimpleDate simpleDate = new SimpleDate("1924-31-24");
     }
 
     /**
