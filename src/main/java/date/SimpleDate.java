@@ -47,11 +47,11 @@ public class SimpleDate {
      */
     private int checkAndGetYear(String year){
         if (year.isEmpty()){
-            return checkAndGetMonth(
+            return checkAndGetYear(
                     printErrorMessageAndGetNewInput("Given year is empty!")
             );
         } else if (checkIfStringIsNotANumber(year)){
-            return checkAndGetMonth(
+            return checkAndGetYear(
                     printErrorMessageAndGetNewInput("Given year isn't a number!")
             );
         } else {
@@ -100,11 +100,11 @@ public class SimpleDate {
      */
     private int checkAndGetDay(String day){
         if (day.isEmpty()){
-            return checkAndGetMonth(
+            return checkAndGetDay(
                     printErrorMessageAndGetNewInput("Given day is empty!")
             );
         } else if (checkIfStringIsNotANumber(day)) {
-            return checkAndGetMonth(
+            return checkAndGetDay(
                     printErrorMessageAndGetNewInput("Given day isn't a number!")
             );
         } else if (Integer.parseInt(day) <= 1 || Integer.parseInt(day) >= 31){
