@@ -7,8 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EmploymentDepartmentTest {
 
-    EmploymentDepartment employmentDepartment = EmploymentDepartment.getInstance();
-
     @Test
     void checkReturnWithCorrectDataCheckCorrectnessAndGetPilotStatus(){
     }
