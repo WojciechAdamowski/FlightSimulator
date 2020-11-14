@@ -1,6 +1,7 @@
 package employmentDepartment;
 
 import date.SimpleDate;
+import employmentDepartment.exceptions.PilotSalary.PilotSalaryIsNotANumberException;
 import employmentDepartment.exceptions.pilotBirthdate.PilotBirthdateIsNotRealException;
 import employmentDepartment.exceptions.pilotName.PilotNameDoesNotHaveTwoPartsException;
 import employmentDepartment.exceptions.pilotName.PilotNameDoesNotHaveUpperCaseCharactersException;
@@ -41,8 +42,9 @@ public class EmploymentDepartment {
         String pilotName = printInputForPilotName(input);
         String pilotPhoneNumber = printInputForPilotPhoneNumber(input);
         String pilotBirthDate = printInputForPilotBirthDate(input);
+        String pilotSalary = printInputForPilotSalary(input);
 
-        registerNewPilot(pilotStatusNumber, pilotName, pilotPhoneNumber, pilotBirthDate);
+        registerNewPilot(pilotStatusNumber, pilotName, pilotPhoneNumber, pilotBirthDate, pilotSalary);
     }
 
     private String printChooseMenuAndInputPilotStatus(Scanner input){
@@ -70,23 +72,31 @@ public class EmploymentDepartment {
         return input.nextLine();
     }
 
+    private String printInputForPilotSalary(Scanner input){
+        System.out.println("Please write pilot's salary(e.g. 1200): ");
+        return input.nextLine();
+    }
+
     public void registerNewPilot(
             String pilotStatusToCheck,
             String pilotNameToCheck,
             String pilotPhoneNumberToCheck,
-            String pilotBirthDateToCheck
+            String pilotBirthDateToCheck,
+            String pilotSalaryToCheck
     ){
         try {
             PilotStatus pilotStatus = checkCorrectnessAndGetPilotStatus(pilotStatusToCheck);
             String pilotName = checkCorrectnessAndGetPilotName(pilotNameToCheck);
             String pilotPhoneNumber = checkCorrectnessAndGetPilotPhoneNumber(pilotPhoneNumberToCheck);
             Date pilotBirthDate = checkCorrectnessAndGetPilotBirthDate(pilotBirthDateToCheck);
+            String pilotSalary = checkCorrectnessAndGetPilotSalary(pilotSalaryToCheck);
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             System.out.println(
                     "Status: " + pilotStatus + "\n" +
                     "Name: " + pilotName + "\n" +
                     "Phone Number: " + pilotPhoneNumber + "\n" +
-                    "Birth date: " + format.format(pilotBirthDate)
+                    "Birth date: " + format.format(pilotBirthDate) + "\n" +
+                    "Salary: " + pilotSalary
             );
         }catch (PilotStatusDoesNotExistException |
                 PilotNameIsEmptyException |
@@ -95,7 +105,8 @@ public class EmploymentDepartment {
                 PilotNameDoesNotHaveUpperCaseCharactersException |
                 PilotPhoneIsNotANumberException |
                 PilotPhoneDoesNotHaveNineNumbersException |
-                PilotBirthdateIsNotRealException error){
+                PilotBirthdateIsNotRealException |
+                PilotSalaryIsNotANumberException error){
             System.out.println(error.getMessage());
         }
     }
@@ -197,7 +208,7 @@ public class EmploymentDepartment {
             PilotPhoneIsNotANumberException,
             PilotPhoneDoesNotHaveNineNumbersException
     {
-        if (checkIfPhoneIsNotANumber(phoneToCheck)){
+        if (checkIfStringIsNotANumber(phoneToCheck)){
             throw new PilotPhoneIsNotANumberException("Given phone is not a number!");
         } else if (checkIfPhoneDoesNotHaveNineNumbers(phoneToCheck)){
             throw new PilotPhoneDoesNotHaveNineNumbersException("Given phone does not have nine numbers!");
@@ -206,8 +217,8 @@ public class EmploymentDepartment {
         }
     }
 
-    private boolean checkIfPhoneIsNotANumber(String phone){
-        for (Character character : phone.toCharArray()){
+    private boolean checkIfStringIsNotANumber(String string){
+        for (Character character : string.toCharArray()){
             if (!Character.isDigit(character)){
                 return true;
             }
@@ -243,6 +254,22 @@ public class EmploymentDepartment {
         int years = Integer.parseInt(date.split("-")[0]);
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         return currentYear - years > 80 || currentYear - years < -80;
+    }
+
+    /**
+     * This method checks: <br>
+     *     1. If given salary is NOT a number
+     *
+     * @param salary String to check
+     * @return Checked salary or throw an exception
+     * @throws PilotSalaryIsNotANumberException Exception informs that pilot's salary is NOT a number
+     */
+    private String checkCorrectnessAndGetPilotSalary(String salary) throws PilotSalaryIsNotANumberException {
+        if (checkIfStringIsNotANumber(salary)){
+            throw new PilotSalaryIsNotANumberException("Pilot salary must be a number!");
+        } else {
+            return salary;
+        }
     }
 
 }
