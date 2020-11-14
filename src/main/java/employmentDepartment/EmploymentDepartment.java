@@ -1,18 +1,15 @@
 package employmentDepartment;
 
 import date.SimpleDate;
-import employmentDepartment.exceptions.PilotSalary.PilotSalaryIsNotANumberException;
-import employmentDepartment.exceptions.pilotBirthdate.PilotBirthdateIsNotRealException;
-import employmentDepartment.exceptions.pilotName.PilotNameDoesNotHaveTwoPartsException;
-import employmentDepartment.exceptions.pilotName.PilotNameDoesNotHaveUpperCaseCharactersException;
-import employmentDepartment.exceptions.pilotName.PilotNameIsEmptyException;
-import employmentDepartment.exceptions.pilotName.PilotNameIsNotStringException;
-import employmentDepartment.exceptions.pilotPhoneNumber.PilotPhoneDoesNotHaveNineNumbersException;
-import employmentDepartment.exceptions.pilotPhoneNumber.PilotPhoneIsNotANumberException;
-import employmentDepartment.exceptions.pilotStatus.PilotStatusDoesNotExistException;
-import flight.enums.PilotStatus;
+import employmentDepartment.exceptions.employeeSalary.EmployeeSalaryIsNotANumberException;
+import employmentDepartment.exceptions.employeeBirthdate.EmployeeBirthdateIsNotRealException;
+import employmentDepartment.exceptions.employeeName.EmployeeNameDoesNotHaveTwoPartsException;
+import employmentDepartment.exceptions.employeeName.EmployeeNameDoesNotHaveUpperCaseCharactersException;
+import employmentDepartment.exceptions.employeeName.EmployeeNameIsEmptyException;
+import employmentDepartment.exceptions.employeeName.EmployeeNameIsNotStringException;
+import employmentDepartment.exceptions.employeePhoneNumber.EmployeePhoneDoesNotHaveNineNumbersException;
+import employmentDepartment.exceptions.employeePhoneNumber.EmployeePhoneIsNotANumberException;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
@@ -20,118 +17,26 @@ import java.util.Scanner;
 /**
  * This class represent employment department in our airport
  */
-public class EmploymentDepartment {
-    private static EmploymentDepartment single_instance = null;
+public abstract class EmploymentDepartment {
 
-    public static EmploymentDepartment getInstance()
-    {
-        if (single_instance == null)
-            single_instance = new EmploymentDepartment();
-
-        return single_instance;
-    }
-
-    /**
-     * This methods allows us to hire new pilot with
-     * given attributes
-     */
-    public void hireNewPilot(){
-        Scanner input = new Scanner(System.in);
-
-        String pilotStatusNumber = printChooseMenuAndInputPilotStatus(input);
-        String pilotName = printInputForPilotName(input);
-        String pilotPhoneNumber = printInputForPilotPhoneNumber(input);
-        String pilotBirthDate = printInputForPilotBirthDate(input);
-        String pilotSalary = printInputForPilotSalary(input);
-
-        registerNewPilot(pilotStatusNumber, pilotName, pilotPhoneNumber, pilotBirthDate, pilotSalary);
-    }
-
-    private String printChooseMenuAndInputPilotStatus(Scanner input){
-        System.out.print(
-                "Choose one of two pilot status \n" +
-                        " 1. Captain \n" +
-                        " 2. Navigator \n" +
-                        "You chose: "
-        );
+    String printInputForEmployeeName(Scanner input){
+        System.out.print("Please write employee name(e.g. Janusz Kowalski): ");
         return input.nextLine();
     }
 
-    private String printInputForPilotName(Scanner input){
-        System.out.print("Please write pilot name(e.g. Janusz Kowalski): ");
+    String printInputForEmployeePhoneNumber(Scanner input){
+        System.out.print("Please write employee phone number(e.g. 526876542): ");
         return input.nextLine();
     }
 
-    private String printInputForPilotPhoneNumber(Scanner input){
-        System.out.print("Please write pilot phone number(e.g. 526876542): ");
+    String printInputForEmployeeBirthDate(Scanner input){
+        System.out.print("Please write employee's birthDate(e.g. 2000-10-28): ");
         return input.nextLine();
     }
 
-    private String printInputForPilotBirthDate(Scanner input){
-        System.out.print("Please write pilot's birthDate(e.g. 2000-10-28): ");
+    String printInputForEmployeeSalary(Scanner input){
+        System.out.print("Please write employee's salary(e.g. 1200): ");
         return input.nextLine();
-    }
-
-    private String printInputForPilotSalary(Scanner input){
-        System.out.print("Please write pilot's salary(e.g. 1200): ");
-        return input.nextLine();
-    }
-
-    public void registerNewPilot(
-            String pilotStatusToCheck,
-            String pilotNameToCheck,
-            String pilotPhoneNumberToCheck,
-            String pilotBirthDateToCheck,
-            String pilotSalaryToCheck
-    ){
-        try {
-            PilotStatus pilotStatus = checkCorrectnessAndGetPilotStatus(pilotStatusToCheck);
-            String pilotName = checkCorrectnessAndGetPilotName(pilotNameToCheck);
-            String pilotPhoneNumber = checkCorrectnessAndGetPilotPhoneNumber(pilotPhoneNumberToCheck);
-            Date pilotBirthDate = checkCorrectnessAndGetPilotBirthDate(pilotBirthDateToCheck);
-            String pilotSalary = checkCorrectnessAndGetPilotSalary(pilotSalaryToCheck);
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            System.out.println(
-                    "Status: " + pilotStatus + "\n" +
-                    "Name: " + pilotName + "\n" +
-                    "Phone Number: " + pilotPhoneNumber + "\n" +
-                    "Birth date: " + format.format(pilotBirthDate) + "\n" +
-                    "Salary: " + pilotSalary
-            );
-        }catch (PilotStatusDoesNotExistException |
-                PilotNameIsEmptyException |
-                PilotNameDoesNotHaveTwoPartsException |
-                PilotNameIsNotStringException |
-                PilotNameDoesNotHaveUpperCaseCharactersException |
-                PilotPhoneIsNotANumberException |
-                PilotPhoneDoesNotHaveNineNumbersException |
-                PilotBirthdateIsNotRealException |
-                PilotSalaryIsNotANumberException error){
-            System.out.println(error.getMessage());
-        }
-    }
-
-    /**
-     * This method ask about which status of pilot we choose
-     * <br>
-     * We can choose from two statuses: CAPTAIN or NAVIGATOR
-     * <br>
-     * If we dont choose one of this two method will throws us
-     * an exception about no such status for pilot
-     * <br>
-     * @param whichStatus This is number of status which we check
-     *
-     * @return This return is asked pilot status
-     * @throws PilotStatusDoesNotExistException Where number does not match with exist status
-     */
-    private PilotStatus checkCorrectnessAndGetPilotStatus(String whichStatus) throws PilotStatusDoesNotExistException{
-        if (whichStatus.equals("1")){
-            return PilotStatus.PILOT_CAPTAIN;
-        } else if (whichStatus.equals("2")){
-            return PilotStatus.PILOT_NAVIGATOR;
-        } else {
-            throw new PilotStatusDoesNotExistException("There is no such status, please select the correct one!");
-        }
     }
 
     /**
@@ -143,25 +48,25 @@ public class EmploymentDepartment {
      *
      * @param nameToCheck Given name which we want to check
      * @return Name if everything is correct
-     * @throws PilotNameIsEmptyException When name is empty
-     * @throws PilotNameDoesNotHaveTwoPartsException When name does not have two pieces
-     * @throws PilotNameIsNotStringException When name is not a string
-     * @throws PilotNameDoesNotHaveUpperCaseCharactersException When name does not have upper case as first char
+     * @throws EmployeeNameIsEmptyException When name is empty
+     * @throws EmployeeNameDoesNotHaveTwoPartsException When name does not have two pieces
+     * @throws EmployeeNameIsNotStringException When name is not a string
+     * @throws EmployeeNameDoesNotHaveUpperCaseCharactersException When name does not have upper case as first char
      */
-    private String checkCorrectnessAndGetPilotName(String nameToCheck) throws
-            PilotNameIsEmptyException,
-            PilotNameDoesNotHaveTwoPartsException,
-            PilotNameIsNotStringException,
-            PilotNameDoesNotHaveUpperCaseCharactersException
+    String checkCorrectnessAndGetEmployeeName(String nameToCheck) throws
+            EmployeeNameIsEmptyException,
+            EmployeeNameDoesNotHaveTwoPartsException,
+            EmployeeNameIsNotStringException,
+            EmployeeNameDoesNotHaveUpperCaseCharactersException
     {
         if (nameToCheck.isEmpty()){
-            throw new PilotNameIsEmptyException("Given name is empty!");
+            throw new EmployeeNameIsEmptyException("Given name is empty!");
         } else if (checkIfNameIsNotString(nameToCheck)){
-            throw new PilotNameIsNotStringException("Given name is not a string at all");
+            throw new EmployeeNameIsNotStringException("Given name is not a string at all");
         } else if (checkIsGivenNameDoesNotHaveTwoPieces(nameToCheck)){
-            throw new PilotNameDoesNotHaveTwoPartsException("Given name does not have two parts");
+            throw new EmployeeNameDoesNotHaveTwoPartsException("Given name does not have two parts");
         }  else if (checkIfNamePiecesIsNotUpperCase(nameToCheck)){
-            throw new PilotNameDoesNotHaveUpperCaseCharactersException("Given name doesn't have upper case at first characters in pieces of name");
+            throw new EmployeeNameDoesNotHaveUpperCaseCharactersException("Given name doesn't have upper case at first characters in pieces of name");
         } else {
             return nameToCheck;
         }
@@ -201,17 +106,17 @@ public class EmploymentDepartment {
      *
      * @param phoneToCheck phone number to check
      * @return checked phone number
-     * @throws PilotPhoneIsNotANumberException throw this exception if phone is not a number
-     * @throws PilotPhoneDoesNotHaveNineNumbersException throw this exception if phone does not have nine numbers
+     * @throws EmployeePhoneIsNotANumberException throw this exception if phone is not a number
+     * @throws EmployeePhoneDoesNotHaveNineNumbersException throw this exception if phone does not have nine numbers
      */
-    private String checkCorrectnessAndGetPilotPhoneNumber(String phoneToCheck) throws
-            PilotPhoneIsNotANumberException,
-            PilotPhoneDoesNotHaveNineNumbersException
+    String checkCorrectnessAndGetEmployeePhoneNumber(String phoneToCheck) throws
+            EmployeePhoneIsNotANumberException,
+            EmployeePhoneDoesNotHaveNineNumbersException
     {
         if (checkIfStringIsNotANumber(phoneToCheck)){
-            throw new PilotPhoneIsNotANumberException("Given phone is not a number!");
+            throw new EmployeePhoneIsNotANumberException("Given phone is not a number!");
         } else if (checkIfPhoneDoesNotHaveNineNumbers(phoneToCheck)){
-            throw new PilotPhoneDoesNotHaveNineNumbersException("Given phone does not have nine numbers!");
+            throw new EmployeePhoneDoesNotHaveNineNumbersException("Given phone does not have nine numbers!");
         } else {
             return phoneToCheck;
         }
@@ -238,11 +143,11 @@ public class EmploymentDepartment {
      * @param birthDateToCheck given by user birthDate
      * @return checked birthDate
      */
-    private Date checkCorrectnessAndGetPilotBirthDate(String birthDateToCheck) throws
-            PilotBirthdateIsNotRealException
+    Date checkCorrectnessAndGetEmployeeBirthDate(String birthDateToCheck) throws
+            EmployeeBirthdateIsNotRealException
     {
         if (checkIfDateIsNotProbablyReal(birthDateToCheck)){
-            throw new PilotBirthdateIsNotRealException("Pilot birth date must be real!");
+            throw new EmployeeBirthdateIsNotRealException("Employee birth date must be real!");
         } else {
             SimpleDate simpleDate = new SimpleDate(birthDateToCheck);
             return simpleDate.getSimpleDateInDate();
@@ -260,15 +165,15 @@ public class EmploymentDepartment {
      * This method checks: <br>
      *     1. If given salary is NOT a number
      *
-     * @param salary String to check
+     * @param salaryToCheck String to check
      * @return Checked salary or throw an exception
-     * @throws PilotSalaryIsNotANumberException Exception informs that pilot's salary is NOT a number
+     * @throws EmployeeSalaryIsNotANumberException Exception informs that employee's salary is NOT a number
      */
-    private String checkCorrectnessAndGetPilotSalary(String salary) throws PilotSalaryIsNotANumberException {
-        if (checkIfStringIsNotANumber(salary)){
-            throw new PilotSalaryIsNotANumberException("Pilot salary must be a number!");
+    String checkCorrectnessAndGetEmployeeSalary(String salaryToCheck) throws EmployeeSalaryIsNotANumberException {
+        if (checkIfStringIsNotANumber(salaryToCheck)){
+            throw new EmployeeSalaryIsNotANumberException("Employee salary must be a number!");
         } else {
-            return salary;
+            return salaryToCheck;
         }
     }
 
