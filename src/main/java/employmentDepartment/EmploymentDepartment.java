@@ -1,7 +1,6 @@
 package employmentDepartment;
 
 import date.SimpleDate;
-import employmentDepartment.exceptions.pilotBirthdate.PilotBirthdateDoesNotHaveThreePeacesException;
 import employmentDepartment.exceptions.pilotBirthdate.PilotBirthdateIsNotRealException;
 import employmentDepartment.exceptions.pilotName.PilotNameDoesNotHaveTwoPartsException;
 import employmentDepartment.exceptions.pilotName.PilotNameDoesNotHaveUpperCaseCharactersException;
@@ -96,7 +95,6 @@ public class EmploymentDepartment {
                 PilotNameDoesNotHaveUpperCaseCharactersException |
                 PilotPhoneIsNotANumberException |
                 PilotPhoneDoesNotHaveNineNumbersException |
-                PilotBirthdateDoesNotHaveThreePeacesException |
                 PilotBirthdateIsNotRealException error){
             System.out.println(error.getMessage());
         }
@@ -230,23 +228,15 @@ public class EmploymentDepartment {
      * @return checked birthDate
      */
     private Date checkCorrectnessAndGetPilotBirthDate(String birthDateToCheck) throws
-            PilotBirthdateDoesNotHaveThreePeacesException,
             PilotBirthdateIsNotRealException
     {
-        if (checkIfDateDoesNotHaveThreePeaces(birthDateToCheck)){
-            throw new PilotBirthdateDoesNotHaveThreePeacesException(
-                    "Pilot birthday must be separated by \"-\" and must have three peaces! ");
-        } else if (checkIfDateIsNotProbablyReal(birthDateToCheck)){
+        if (checkIfDateIsNotProbablyReal(birthDateToCheck)){
             throw new PilotBirthdateIsNotRealException("Pilot birth date must be real!");
         } else {
             SimpleDate simpleDate = new SimpleDate(birthDateToCheck);
             return simpleDate.getSimpleDateInDate();
         }
 
-    }
-
-    private boolean checkIfDateDoesNotHaveThreePeaces(String date){
-        return !(date.split("-").length == 3);
     }
 
     private boolean checkIfDateIsNotProbablyReal(String date){
