@@ -73,7 +73,7 @@ public class EmploymentDepartment {
     }
 
     private String printInputForPilotSalary(Scanner input){
-        System.out.println("Please write pilot's salary(e.g. 1200): ");
+        System.out.print("Please write pilot's salary(e.g. 1200): ");
         return input.nextLine();
     }
 
